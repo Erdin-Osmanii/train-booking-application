@@ -9,8 +9,7 @@ export class UserService {
     const user = new User();
     user.name = 'John Doe';
     user.email = 'johndoe@gmail.com';
-    const password = 'password';
-    user.password = await user.hashPassword(password);
+    vpassword = 'password';
     user.createdAt = new Date().toISOString();
     user.updatedAt = new Date().toISOString();
 

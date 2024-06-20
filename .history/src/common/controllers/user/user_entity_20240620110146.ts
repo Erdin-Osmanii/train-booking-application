@@ -6,15 +6,17 @@ import {
   INDEX_TYPE,
   Table,
 } from '@typedorm/common';
+import { BeforeInsert } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Entity({
-  name: 'user',
+  name: 'user', 
   primaryKey: {
     partitionKey: 'USER#{{id}}',
     sortKey: 'USER#{{id}}',
   },
   indexes: {
+    // specify GSI1 key - "GSI1" named global secondary index needs to exist in above table declaration
     GSI1: {
       partitionKey: 'USER#{{id}}',
       sortKey: 'USER#{{id}}',
@@ -37,13 +39,12 @@ export class User {
   @Attribute()
   password: string;
 
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
   createdAt: string;
 
   updatedAt: string;
-
-  async hashPassword(password: string) {
-    const salt = await bcrypt.genSalt(10);
-    password = await bcrypt.hash(password, salt);
-    return password;
-  }
 }
