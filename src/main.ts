@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { User } from './common/controllers/user/user_entity';
+import { User } from './controllers/user/user_entity';
 import { mainTable } from './main_table';
 import { Logger } from '@nestjs/common';
 import { createConnection } from '@typedorm/core';

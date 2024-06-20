@@ -4,7 +4,6 @@ import {
   AutoGenerateAttribute,
   Entity,
   INDEX_TYPE,
-  Table,
 } from '@typedorm/common';
 import * as bcrypt from 'bcrypt';
 
