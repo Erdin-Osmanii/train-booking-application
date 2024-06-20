@@ -8,7 +8,6 @@ export class UserService {
   async createUser() {
     const user = new User();
     user.name = 'John Doe';
-    user.email = 'johndoe@gmail.com';
     const password = 'password';
     user.password = await user.hashPassword(password);
     user.createdAt = new Date().toISOString();

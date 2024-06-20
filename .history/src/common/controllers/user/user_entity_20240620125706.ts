@@ -37,13 +37,8 @@ export class User {
   @Attribute()
   password: string;
 
+
   createdAt: string;
 
   updatedAt: string;
-
-  async hashPassword(password: string) {
-    const salt = await bcrypt.genSalt(10);
-    password = await bcrypt.hash(password, salt);
-    return password;
-  }
 }

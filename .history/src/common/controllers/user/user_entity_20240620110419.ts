@@ -6,6 +6,7 @@ import {
   INDEX_TYPE,
   Table,
 } from '@typedorm/common';
+import { BeforeInsert } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Entity({
@@ -34,16 +35,14 @@ export class User {
   @Attribute()
   email: string;
 
-  @Attribute()
   password: string;
+  @Attribute()
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
 
   createdAt: string;
 
   updatedAt: string;
-
-  async hashPassword(password: string) {
-    const salt = await bcrypt.genSalt(10);
-    password = await bcrypt.hash(password, salt);
-    return password;
-  }
 }
