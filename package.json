@@ -22,6 +22,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.600.0",
     "@aws-sdk/lib-dynamodb": "^3.600.0",
+    "@nestjs/axios": "^3.0.2",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/cqrs": "^10.2.7",
@@ -29,6 +30,7 @@
     "@typedorm/common": "^1.15.4",
     "@typedorm/core": "^1.15.4",
     "aws-sdk": "^2.1644.0",
+    "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "reflect-metadata": "^0.2.2",
