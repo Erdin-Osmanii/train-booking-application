@@ -9,6 +9,17 @@ import { DeleteUserHandler } from 'src/core/application/user/DeleteUser/delete-u
 @Module({
   imports: [CqrsModule],
   controllers: [UserController],
-  providers: [CreateUserHandler, GetUserHandler, UpdateUserHandler, DeleteUserHandler],
+  providers: [
+    CreateUserHandler,
+    GetUserHandler,
+    UpdateUserHandler,
+    DeleteUserHandler,
+  ],
+  exports: [
+    CreateUserHandler,
+    GetUserHandler,
+    UpdateUserHandler,
+    DeleteUserHandler,
+  ],
 })
 export class UserModule {}

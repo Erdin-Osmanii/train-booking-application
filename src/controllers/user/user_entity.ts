@@ -15,8 +15,8 @@ import * as bcrypt from 'bcrypt';
   },
   indexes: {
     GSI1: {
-      partitionKey: 'USER#{{id}}',
-      sortKey: 'USER#{{id}}',
+      partitionKey: 'USER#EMAIL#{{email}}',
+      sortKey: 'USER#ID#{{id}}',
       type: INDEX_TYPE.GSI,
     },
   },
@@ -44,5 +44,10 @@ export class User {
     const salt = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, salt);
     return password;
+  }
+
+  async comparePassword(plainTextPassword, hashedPassword) {
+    const match = await bcrypt.compare(plainTextPassword, hashedPassword);
+    return match;
   }
 }

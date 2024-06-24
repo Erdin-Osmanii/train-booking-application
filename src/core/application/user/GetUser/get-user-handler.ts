@@ -3,11 +3,14 @@ import { GetUserQuery } from './get-user-querry';
 import { getEntityManager } from '@typedorm/core';
 import { User } from 'src/controllers/user/user_entity';
 import { GetUserResponse } from './get-user-response';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 @QueryHandler(GetUserQuery)
 export class GetUserHandler implements IQueryHandler<GetUserQuery> {
   async getUser(id: string) {
+    if (!id) {
+      throw new BadRequestException('Id is required.');
+    }
     const entityManager = getEntityManager();
     const response = await entityManager.findOne(User, {
       id: id,
