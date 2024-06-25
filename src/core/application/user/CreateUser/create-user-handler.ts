@@ -1,13 +1,12 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from './create-user-command';
 import { BadRequestException } from '@nestjs/common';
-import { User } from 'src/controllers/user/user_entity';
+import { User } from 'src/controllers/user/models/user-entity';
 import { getEntityManager } from '@typedorm/core';
 import { CreateUserResponse } from './create-user-response';
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
-    
   async createUser(name: string, email: string, password: string) {
     if (!name || !email || !password) {
       throw new BadRequestException('Name, email, and password are required.');

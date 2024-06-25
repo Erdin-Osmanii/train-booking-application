@@ -1,7 +1,7 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { GetUserQuery } from './get-user-querry';
+import { GetUserQuery } from './get-user-query';
 import { getEntityManager } from '@typedorm/core';
-import { User } from 'src/controllers/user/user_entity';
+import { User } from 'src/controllers/user/models/user-entity';
 import { GetUserResponse } from './get-user-response';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 

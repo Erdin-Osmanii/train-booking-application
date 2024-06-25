@@ -1,10 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { User } from './user_entity';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
+import { User } from './models/user-entity';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from 'src/core/application/user/CreateUser/create-user-command';
-import { GetUserQuery } from 'src/core/application/user/GetUser/get-user-querry';
 import { UpdateUserCommand } from 'src/core/application/user/UpdateUser/update-user-command';
 import { DeleteUserCommand } from 'src/core/application/user/DeleteUser/delete-user-command';
+import { GetUserQuery } from 'src/core/application/user/GetUser/get-user-query';
+import { AuthGuard } from '../auth/auth.guard';
+import { UserUpdateDto } from './dtos/userUpdate.dto';
 
 @Controller('user')
 export class UserController {
@@ -27,17 +39,28 @@ export class UserController {
     return user;
   }
 
+  @UseGuards(AuthGuard)
   @Put(':id')
-  async updateUser(@Param('id') id: string, @Body() userData: User) {
-    const command = new UpdateUserCommand(id, userData.name, userData.email);
+  async updateUser(
+    @Param('id') id: string,
+    @Body() userData: UserUpdateDto,
+    @Request() req,
+  ) {
+    const command = new UpdateUserCommand(
+      id,
+      req.user.sub,
+      userData.name,
+      userData.email,
+    );
     const updatedUser = await this.commandBus.execute(command);
     return updatedUser;
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
-    const command = new DeleteUserCommand(id);
+  async deleteUser(@Param('id') id: string, @Request() req) {
+    const command = new DeleteUserCommand(id, req.user.sub);
     const deletedUser = await this.commandBus.execute(command);
-    return deletedUser;    
+    return deletedUser;
   }
 }

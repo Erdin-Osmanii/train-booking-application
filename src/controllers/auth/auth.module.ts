@@ -11,7 +11,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     JwtModule.register({
       global: true,
       secret: jwtConstants(),
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '60m' },
     }),
   ],
   providers: [SignInHandler],

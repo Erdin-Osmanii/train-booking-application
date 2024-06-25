@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SignInCommand } from './sign-in-command';
 import { JwtService } from '@nestjs/jwt';
 import { getEntityManager } from '@typedorm/core';
-import { User } from 'src/controllers/user/user_entity';
+import { User } from 'src/controllers/user/models/user-entity';
 import { UnauthorizedException } from '@nestjs/common';
 import { SignInResponse } from './sign-in-response';
 import { Token } from 'aws-sdk';

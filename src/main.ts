@@ -1,12 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { User } from './controllers/user/user_entity';
+import { User } from './controllers/user/models/user-entity';
 import { mainTable } from './main_table';
 import { Logger } from '@nestjs/common';
 import { createConnection } from '@typedorm/core';
 import { DocumentClientV3 } from '@typedorm/document-client';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { config as dotenvConfig } from 'dotenv';
+import { Booking } from './controllers/booking/modles/booking-entity';
 
 async function bootstrap() {
   dotenvConfig();
@@ -25,7 +26,7 @@ async function bootstrap() {
   createConnection({
     table: mainTable,
     name: 'default',
-    entities: [User],
+    entities: [User, Booking],
     documentClient,
   });
 
