@@ -16,7 +16,7 @@ import { UpdateUserCommand } from 'src/core/application/user/UpdateUser/update-u
 import { DeleteUserCommand } from 'src/core/application/user/DeleteUser/delete-user-command';
 import { GetUserQuery } from 'src/core/application/user/GetUser/get-user-query';
 import { AuthGuard } from '../auth/auth.guard';
-import { UserUpdateDto } from './dtos/userUpdate.dto';
+import { UpdateUserDto } from './dtos/UpdateUserdto';
 
 @Controller('user')
 export class UserController {
@@ -43,7 +43,7 @@ export class UserController {
   @Put(':id')
   async updateUser(
     @Param('id') id: string,
-    @Body() userData: UserUpdateDto,
+    @Body() userData: UpdateUserDto,
     @Request() req,
   ) {
     const command = new UpdateUserCommand(

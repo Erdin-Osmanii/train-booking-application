@@ -24,8 +24,6 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
       throw new NotFoundException('User not found');
     }
 
-    console.log(logedInId, oldUser.id);
-
     if (logedInId !== oldUser.id) {
       throw new UnauthorizedException('Not the loged in user');
     }

@@ -14,7 +14,6 @@ export class RailBelgiumClient {
       const stationData: RailBelgiumGetStationsResponse = response.data.station;
       return stationData;
     } catch (error) {
-      console.log(error);
       throw new HttpException(
         'Failed to fetch data from external Rail Belgium Api',
         HttpStatus.BAD_REQUEST,
