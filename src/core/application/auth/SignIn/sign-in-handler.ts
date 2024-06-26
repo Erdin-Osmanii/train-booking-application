@@ -5,13 +5,11 @@ import { getEntityManager } from '@typedorm/core';
 import { User } from 'src/controllers/user/models/user-entity';
 import { UnauthorizedException } from '@nestjs/common';
 import { SignInResponse } from './sign-in-response';
-import { Token } from 'aws-sdk';
 
 @CommandHandler(SignInCommand)
 export class SignInHandler implements ICommandHandler<SignInCommand> {
   constructor(private jwtService: JwtService) {}
   async signIn(
-    name: string,
     email: string,
     password: string,
   ): Promise<{ access_token: string }> {
@@ -29,7 +27,7 @@ export class SignInHandler implements ICommandHandler<SignInCommand> {
 
     const match = await user.comparePassword(password, user.password);
 
-    if (user?.name !== name || !match) {
+    if (!match) {
       throw new UnauthorizedException("Credentials don't match");
     }
     const payload = { sub: user.id, username: user.name };
@@ -39,8 +37,8 @@ export class SignInHandler implements ICommandHandler<SignInCommand> {
   }
 
   async execute(command: SignInCommand) {
-    const { name, email, password } = command;
-    const token = await this.signIn(name, email, password);
+    const { email, password } = command;
+    const token = await this.signIn(email, password);
     return new SignInResponse(token.access_token);
   }
 }

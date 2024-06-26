@@ -16,6 +16,9 @@ import { CreateBookingCommand } from 'src/core/application/booking/CreateBooking
 import { GetBookingQuery } from 'src/core/application/booking/GetBooking/get-booking-query';
 import { UpdateBookingCommand } from 'src/core/application/booking/UpdateBooking/update-booking-command';
 import { DeleteBookingCommand } from 'src/core/application/booking/DeleteBooking/delete-booking-command';
+import { CreateBookingDto } from './dtos/create-booking-dto';
+import { Update } from '@typedorm/core/cjs/src/classes/expression/update/update';
+import { UpdateBookingDto } from './dtos/update-booking-dto';
 
 @UseGuards(AuthGuard)
 @Controller('booking')
@@ -26,7 +29,7 @@ export class BookingController {
   ) {}
 
   @Post()
-  async createBooking(@Body() booking: Booking, @Request() req) {
+  async createBooking(@Body() booking: CreateBookingDto, @Request() req) {
     const command = new CreateBookingCommand(
       req.user.sub,
       booking.trainName,
@@ -49,7 +52,7 @@ export class BookingController {
   @Put(':id')
   async updateBooking(
     @Param('id') id: string,
-    @Body() bookingData: Booking,
+    @Body() bookingData: UpdateBookingDto,
     @Request() req,
   ) {
     const command = new UpdateBookingCommand(

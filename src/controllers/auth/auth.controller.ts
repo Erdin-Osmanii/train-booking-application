@@ -11,6 +11,7 @@ import {
 import { AuthGuard } from './auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { SignInCommand } from 'src/core/application/auth/SignIn/sign-in-command';
+import { SignInDto } from './dtos/sign-in-dto';
 
 @Controller('auth')
 export class AuthController {
@@ -18,9 +19,8 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
+  signIn(@Body() signInDto: SignInDto) {
     const command = new SignInCommand(
-      signInDto.name,
       signInDto.email,
       signInDto.password,
     );

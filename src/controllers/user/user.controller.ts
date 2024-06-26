@@ -16,7 +16,8 @@ import { UpdateUserCommand } from 'src/core/application/user/UpdateUser/update-u
 import { DeleteUserCommand } from 'src/core/application/user/DeleteUser/delete-user-command';
 import { GetUserQuery } from 'src/core/application/user/GetUser/get-user-query';
 import { AuthGuard } from '../auth/auth.guard';
-import { UpdateUserDto } from './dtos/UpdateUserdto';
+import { UpdateUserDto } from './dtos/update-user-dto';
+import { CreateUserDto } from './dtos/create-user-dto';
 
 @Controller('user')
 export class UserController {
@@ -26,7 +27,7 @@ export class UserController {
   ) {}
 
   @Post()
-  async createUser(@Body() user: User) {
+  async createUser(@Body() user: CreateUserDto) {
     const command = new CreateUserCommand(user.name, user.email, user.password);
     const createdUser = await this.commandBus.execute(command);
     return createdUser;
