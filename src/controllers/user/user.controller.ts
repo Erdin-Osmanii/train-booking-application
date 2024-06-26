@@ -8,6 +8,7 @@ import {
   Put,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { User } from './models/user-entity';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -18,6 +19,7 @@ import { GetUserQuery } from 'src/core/application/user/GetUser/get-user-query';
 import { AuthGuard } from '../auth/auth.guard';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { CreateUserDto } from './dtos/create-user-dto';
+import { GetUserBookingsQuery } from 'src/core/application/user/GetUserBookings/get-user-bookings-query';
 
 @Controller('user')
 export class UserController {
@@ -63,5 +65,17 @@ export class UserController {
     const command = new DeleteUserCommand(id, req.user.sub);
     const deletedUser = await this.commandBus.execute(command);
     return deletedUser;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':id/bookings')
+  async getUserBookings(
+    @Param('id') id: string,
+    @Request() req,
+    @Query('ignorePrevious') ignorePrevious: boolean,
+  ) {
+    const query = new GetUserBookingsQuery(id, req.user.sub, ignorePrevious);
+    const bookings = await this.queryBus.execute(query);
+    return bookings;
   }
 }

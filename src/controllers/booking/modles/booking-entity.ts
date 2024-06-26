@@ -14,7 +14,7 @@ import {
   },
   indexes: {
     GSI1: {
-      partitionKey: 'BOOKING#ID#{{id}}',
+      partitionKey: 'BOOKING#USERID#{{userId}}',
       sortKey: 'BOOKING#ID#{{id}}',
       type: INDEX_TYPE.GSI,
     },
