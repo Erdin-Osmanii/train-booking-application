@@ -10,6 +10,7 @@ import {
   Request,
   Query,
   UsePipes,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from 'src/core/application/user/CreateUser/create-user-command';
@@ -20,7 +21,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { UpdateUserDto, updateUserSchema } from './dtos/update-user-dto';
 import { CreateUserDto, createUserSchema } from './dtos/create-user-dto';
 import { GetUserBookingsQuery } from 'src/core/application/user/GetUserBookings/get-user-bookings-query';
-import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
+import { ZodValidationPipe } from 'src/core/pipes/zod-validation.pipe';
 
 @Controller('user')
 export class UserController {
@@ -75,7 +76,7 @@ export class UserController {
   async getUserBookings(
     @Param('id') id: string,
     @Request() req,
-    @Query('ignorePrevious') ignorePrevious: boolean,
+    @Query('ignorePrevious', ParseBoolPipe) ignorePrevious: boolean,
   ) {
     const query = new GetUserBookingsQuery(id, req.user.sub, ignorePrevious);
     const bookings = await this.queryBus.execute(query);

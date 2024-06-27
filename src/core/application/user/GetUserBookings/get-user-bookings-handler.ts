@@ -41,13 +41,14 @@ export class GetUserBookingsHandler
     );
 
     const bookings = response.items;
-    const date = new Date();
+    const now = new Date();
 
-    if (ignorePrevious) {
-      return bookings.filter((booking) => {
-        const arrivalTime = new Date(booking.arrivalTime);
-        return arrivalTime > date;
+    if (ignorePrevious == true) {
+      const filteredbookings = bookings.filter((booking) => {
+        const departureTime = new Date(booking.departureTime);
+        return departureTime > now;
       });
+      return filteredbookings;
     }
 
     return bookings;

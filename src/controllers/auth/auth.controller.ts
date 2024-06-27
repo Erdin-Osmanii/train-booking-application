@@ -12,7 +12,7 @@ import { AuthGuard } from './auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { SignInCommand } from 'src/core/application/auth/SignIn/sign-in-command';
 import { SignInDto, signInSchema } from './dtos/sign-in-dto';
-import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
+import { ZodValidationPipe } from 'src/core/pipes/zod-validation.pipe';
 
 @Controller('auth')
 export class AuthController {
