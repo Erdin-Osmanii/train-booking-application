@@ -11,7 +11,8 @@ import {
 import { AuthGuard } from './auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { SignInCommand } from 'src/core/application/auth/SignIn/sign-in-command';
-import { SignInDto } from './dtos/sign-in-dto';
+import { SignInDto, signInSchema } from './dtos/sign-in-dto';
+import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 
 @Controller('auth')
 export class AuthController {
@@ -19,11 +20,8 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: SignInDto) {
-    const command = new SignInCommand(
-      signInDto.email,
-      signInDto.password,
-    );
+  signIn(@Body(new ZodValidationPipe(signInSchema)) signInDto: SignInDto) {
+    const command = new SignInCommand(signInDto.email, signInDto.password);
     const token = this.commandBus.execute(command);
     return token;
   }

@@ -12,14 +12,14 @@ import { APP_PIPE } from '@nestjs/core';
   controllers: [AppController],
   providers: [
     AppService,
-    {
-      provide: APP_PIPE,
-      useValue: new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-      }),
-    },
+    // {
+    //   provide: APP_PIPE,
+    //   useValue: new ValidationPipe({
+    //     whitelist: true,
+    //     forbidNonWhitelisted: true,
+    //     transform: true,
+    //   }),
+    // },
   ],
 })
 export class AppModule {}

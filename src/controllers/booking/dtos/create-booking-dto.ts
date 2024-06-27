@@ -1,14 +1,13 @@
-import { IsString } from "class-validator";
+import { z } from 'zod';
 
-export class CreateBookingDto {
-  @IsString()
-  trainName: string;
-  @IsString()
-  departureTime: string;
-  @IsString()
-  arrivalTime: string;
-  @IsString()
-  origin: string;
-  @IsString()
-  destination: string;
-}
+export const createBookingSchema = z
+  .object({
+    trainName: z.string(),
+    departureTime: z.string(),
+    arrivalTime: z.string(),
+    origin: z.string(),
+    destination: z.string(),
+  })
+  .required().strict();
+
+export type CreateBookingDto = z.infer<typeof createBookingSchema>;

@@ -1,9 +1,11 @@
-import { IsString } from 'class-validator';
+import { z } from 'zod';
 
-export class SignInDto {
-  @IsString()
-  email: string;
+export const signInSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(6),
+  })
+  .required()
+  .strict();
 
-  @IsString()
-  password: string;
-}
+export type SignInDto = z.infer<typeof signInSchema>;

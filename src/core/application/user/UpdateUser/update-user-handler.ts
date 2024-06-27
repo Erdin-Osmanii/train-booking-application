@@ -34,17 +34,22 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
 
     const updatedAt = new Date().toISOString();
 
-    const response = await entityManager.update(
-      User,
-      { id: id },
-      {
-        name: UpdatedUser.name,
-        email: UpdatedUser.email,
-        updatedAt: updatedAt,
-      },
-    );
+    try {
+      const response = await entityManager.update(
+        User,
+        { id: id },
+        {
+          name: UpdatedUser.name,
+          email: UpdatedUser.email,
+          updatedAt: updatedAt,
+        },
+      );
 
-    return response;
+      return response;
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException();
+    }
   }
 
   async execute(command: UpdateUserCommand) {

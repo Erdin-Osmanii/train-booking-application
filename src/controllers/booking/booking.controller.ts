@@ -11,14 +11,13 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { Booking } from './modles/booking-entity';
 import { CreateBookingCommand } from 'src/core/application/booking/CreateBooking/create-booking-command';
 import { GetBookingQuery } from 'src/core/application/booking/GetBooking/get-booking-query';
 import { UpdateBookingCommand } from 'src/core/application/booking/UpdateBooking/update-booking-command';
 import { DeleteBookingCommand } from 'src/core/application/booking/DeleteBooking/delete-booking-command';
-import { CreateBookingDto } from './dtos/create-booking-dto';
-import { Update } from '@typedorm/core/cjs/src/classes/expression/update/update';
+import { CreateBookingDto, createBookingSchema } from './dtos/create-booking-dto';
 import { UpdateBookingDto } from './dtos/update-booking-dto';
+import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 
 @UseGuards(AuthGuard)
 @Controller('booking')
@@ -29,7 +28,7 @@ export class BookingController {
   ) {}
 
   @Post()
-  async createBooking(@Body() booking: CreateBookingDto, @Request() req) {
+  async createBooking(@Body(new ZodValidationPipe(createBookingSchema)) booking: CreateBookingDto, @Request() req) {
     const command = new CreateBookingCommand(
       req.user.sub,
       booking.trainName,

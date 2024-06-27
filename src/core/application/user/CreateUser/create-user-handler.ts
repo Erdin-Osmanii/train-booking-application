@@ -20,7 +20,14 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     NewUser.updatedAt = new Date().toISOString();
 
     const entityManager = getEntityManager();
-    const response = await entityManager.create(NewUser);
+
+    try {
+      const response = await entityManager.create(NewUser);
+    } catch (error) {
+      console.error(error);
+
+      throw new BadRequestException();
+    }
 
     return NewUser;
   }

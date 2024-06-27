@@ -30,7 +30,9 @@ export class User {
   @Attribute()
   name: string;
 
-  @Attribute()
+  @Attribute({
+    unique: true,
+  })
   email: string;
 
   @Attribute()

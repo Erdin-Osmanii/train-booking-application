@@ -9,17 +9,18 @@ import {
   UseGuards,
   Request,
   Query,
+  UsePipes,
 } from '@nestjs/common';
-import { User } from './models/user-entity';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from 'src/core/application/user/CreateUser/create-user-command';
 import { UpdateUserCommand } from 'src/core/application/user/UpdateUser/update-user-command';
 import { DeleteUserCommand } from 'src/core/application/user/DeleteUser/delete-user-command';
 import { GetUserQuery } from 'src/core/application/user/GetUser/get-user-query';
 import { AuthGuard } from '../auth/auth.guard';
-import { UpdateUserDto } from './dtos/update-user-dto';
-import { CreateUserDto } from './dtos/create-user-dto';
+import { UpdateUserDto, updateUserSchema } from './dtos/update-user-dto';
+import { CreateUserDto, createUserSchema } from './dtos/create-user-dto';
 import { GetUserBookingsQuery } from 'src/core/application/user/GetUserBookings/get-user-bookings-query';
+import { ZodValidationPipe } from 'src/common/pipes/zod-validation.pipe';
 
 @Controller('user')
 export class UserController {
@@ -29,7 +30,9 @@ export class UserController {
   ) {}
 
   @Post()
-  async createUser(@Body() user: CreateUserDto) {
+  async createUser(
+    @Body(new ZodValidationPipe(createUserSchema)) user: CreateUserDto,
+  ) {
     const command = new CreateUserCommand(user.name, user.email, user.password);
     const createdUser = await this.commandBus.execute(command);
     return createdUser;
@@ -46,7 +49,7 @@ export class UserController {
   @Put(':id')
   async updateUser(
     @Param('id') id: string,
-    @Body() userData: UpdateUserDto,
+    @Body(new ZodValidationPipe(updateUserSchema)) userData: UpdateUserDto,
     @Request() req,
   ) {
     const command = new UpdateUserCommand(

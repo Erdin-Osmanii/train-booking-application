@@ -1,23 +1,13 @@
-import { IsOptional, IsString } from 'class-validator';
+import { z } from 'zod';
 
-export class UpdateBookingDto {
-  @IsString()
-  @IsOptional()
-  trainName?: string;
+export const updateBookingSchema = z
+  .object({
+    trainName: z.string().optional(),
+    departureTime: z.string().optional(),
+    arrivalTime: z.string().optional(),
+    origin: z.string().optional(),
+    destination: z.string().optional(),
+  })
+  .strict();
 
-  @IsString()
-  @IsOptional()
-  departureTime?: string;
-
-  @IsString()
-  @IsOptional()
-  arrivalTime?: string;
-
-  @IsString()
-  @IsOptional()
-  origin?: string;
-
-  @IsString()
-  @IsOptional()
-  destination?: string;
-}
+export type UpdateBookingDto = z.infer<typeof updateBookingSchema>;
