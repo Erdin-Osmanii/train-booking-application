@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      DYNAMODB_ENDPOINT: http://dynamodb:8000
+    container_name: app
+    depends_on:
+      - dynamodb
+  dynamodb:
+    user: root
+    command: '-jar DynamoDBLocal.jar -sharedDb -dbPath ./data'
+    image: public.ecr.aws/aws-dynamodb-local/aws-dynamodb-local:latest
+    container_name: dynamodb
+    ports:
+      - '8000:8000'
+    expose:
+      - '8000'
+    volumes:
+      - './docker/dynamodb:/home/dynamodblocal/data'
+    working_dir: /home/dynamodblocal
+
+volumes:
+  dynamodb_data:
