@@ -1,0 +1,3 @@
+[submodule "src/common/module"]
+	path = src/common/module
+	url = https://github.com/Erdin-Osmanii/sub_module_testing
